@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Domus helps you find a flatmate you can trust, then runs the shared parts of the home: bills, deposits and the agreement.">
+  <title>Domus — Find a flatmate you can trust</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site/css/site.css">
+</head>
+<body>
+
+<header class="topbar"><div class="container nav">
+  <a class="brand" href="/"><span class="brand-mark">⌂</span>Domus</a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+  <nav class="navlinks" id="navLinks">
+    <a href="#problem">Why Domus</a>
+    <a href="#how">How it works</a>
+    <a href="#features">Features</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <div class="nav-actions">
+    <a class="btn btn-ghost" href="/app/">Sign in</a>
+    <a class="btn btn-primary" href="/app/">Try the demo</a>
+  </div>
+</div></header>
+
+<main>
+
+<section class="hero"><div class="container hero-grid">
+  <div>
+    <span class="kicker">For people sharing a flat in Indian cities</span>
+    <h1>Find a flatmate you can <span>trust.</span></h1>
+    <p class="lede">Domus matches you with compatible flatmates, then handles the shared parts of the home: bills, deposits and the house rules.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="/app/">Try the live demo →</a>
+      <a class="text-link" href="#how">See how it works</a>
+    </div>
+    <p class="hero-note">No sign-up. One click gives you a filled-in demo home.</p>
+    <ul class="proof" aria-label="Facts about this build">
+      <li>Phone numbers stored as hashes</li>
+      <li>Hide your profile or your budget any time</li>
+      <li>Export or delete your data in one step</li>
+    </ul>
+    <p class="status" id="aiStatus" hidden></p>
+  </div>
+  <div class="frame" aria-label="Domus dashboard preview">
+    <div class="frame-bar"><i></i><i></i><i></i></div>
+    <div class="mock mock-dash" role="img" aria-label="Domus dashboard: matches, shared expenses, deposit and recent activity">
+      <aside class="mock-side"><div class="mock-brand"><span class="brand-mark">⌂</span>Domus</div><span class="on">Home</span><span>Matches</span><span>Expenses</span><span>Agreement</span><span>Profile</span></aside>
+      <div class="mock-main">
+        <div class="mock-hello">Hello, Aarav! <small>Here's what's happening with your home.</small></div>
+        <div class="mock-stats"><div><small>Active matches</small><b>3</b></div><div><small>This month</small><b>₹2,549</b></div><div><small>Deposit</small><b>₹24,000</b></div></div>
+        <div class="mock-cols">
+          <div class="mock-card"><img src="site/assets/images/hero-living-room.jpg" alt=""><b>Koramangala, Bengaluru</b><small>Shared with 2 others</small></div>
+          <div class="mock-card"><small>Recent activity</small><p>Riya paid ₹850 for Groceries</p><p>Request sent to Sneha Iyer</p><p>Agreement draft ready</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="section tint" id="problem"><div class="container">
+  <div class="section-head">
+    <span class="kicker">The problem</span>
+    <h2>Finding a flatmate is the easy part. Trusting them is not.</h2>
+    <p>News reports from Bengaluru, Mumbai and Gurugram describe the same pattern: deposits that never come back, bills nobody pays, and people who turn out not to be who they said.</p>
+  </div>
+  <div class="problem-grid">
+    <div class="problem-card"><b>Deposit disputes</b><p>Deductions for repainting, deposits kept after move-out, and no written record of what was agreed.</p></div>
+    <div class="problem-card"><b>Shared bills that drift</b><p>One person pays the electricity, another forgets the groceries, and nobody can see the running total.</p></div>
+    <div class="problem-card"><b>Fake flatmates and advance-payment scams</b><p>Requests for money before a visit, pressure to move off-platform, and profiles that vanish.</p></div>
+  </div>
+</div></section>
+
+<section class="section" id="how"><div class="container">
+  <div class="section-head">
+    <span class="kicker">How it works</span>
+    <h2>From profile to settled in, in three steps.</h2>
+  </div>
+  <div class="steps">
+    <article class="step"><div class="step-num">01</div><h3>Set your preferences</h3><p>Budget, area, move-in date and habits: sleep, cleaning, cooking, guests. A few lines about yourself become a summary others can read.</p></article>
+    <article class="step"><div class="step-num">02</div><h3>Find your match</h3><p>See ranked flatmates with a match score and a short note on what you share and what to agree on before moving in.</p></article>
+    <article class="step"><div class="step-num">03</div><h3>Run the home together</h3><p>Split bills, see who owes whom, and create a roommate agreement draft to review together before anyone signs.</p></article>
+  </div>
+</div></section>
+
+<section class="section tint" id="features"><div class="container">
+  <div class="section-head">
+    <span class="kicker">Features</span>
+    <h2>Built for the part before and after you move in.</h2>
+  </div>
+  <div class="split" style="margin-bottom:96px">
+    <div>
+      <h3>Find people, not just rooms.</h3>
+      <p style="margin-top:12px">Discovery ranks flatmates by how you actually live, not by listing photos.</p>
+      <ul class="checklist">
+        <li>Match scores with the reasons behind them<span></span></li>
+        <li>Gender preferences respected in every search<span></span></li>
+        <li>Recently viewed and top picks in one place<span></span></li>
+      </ul>
+    </div>
+    <div class="mock mock-phone" role="img" aria-label="Discover screen: a flatmate profile with a 94% match score and tags">
+      <div class="pm-top"><span>Discover</span><span class="pm-bell"></span></div>
+      <div class="pm-search">Search flatmates...</div>
+      <div class="pm-chips"><span class="on">All</span><span>Male</span><span>Female</span></div>
+      <div class="pm-card">
+        <div class="pm-row"><div class="pm-avatar">SI</div><div><b>Sneha Iyer, 24</b><small>Product Designer · Female</small><small>📍 Koramangala</small></div><div class="pm-score">94%<small>match</small></div></div>
+        <div class="pm-tags"><span>Clean</span><span>Non-Smoker</span><span>Pets OK</span></div>
+        <div class="pm-btn">View profile</div>
+      </div>
+      <div class="pm-foot">Sample profile from the demo</div>
+    </div>
+  </div>
+  <div class="features">
+    <div class="feature"><span class="kicker">Protect</span><h3>Scam check</h3><p>Paste a listing or message. Domus flags advance-payment pressure, off-platform requests and other warning signs, with the reasons.</p></div>
+    <div class="feature"><span class="kicker">Manage</span><h3>Shared expenses</h3><p>Add bills, split them equally across members, and see the running balance for each person.</p></div>
+    <div class="feature"><span class="kicker">Agree</span><h3>Roommate agreement</h3><p>Generate a clear first draft covering rent, deposit, notice and house rules. Marked as a draft: review it before anyone signs.</p></div>
+    <div class="feature"><span class="kicker">Verify</span><h3>Verified profiles</h3><p>Sign-in with your phone and an ID check step. In this demo, the ID check is mocked and labelled as such.</p></div>
+  </div>
+</div></section>
+
+<section class="section privacy" id="privacy"><div class="container">
+  <div class="section-head" style="margin-bottom:0">
+    <span class="kicker">Privacy</span>
+    <h2>Your data, your control.</h2>
+    <p style="margin-top:14px">We built Domus to store as little as possible, and to let you decide what others see.</p>
+  </div>
+  <div class="privacy-grid">
+    <div class="privacy-card"><h3>Choose what's visible</h3><p>Hide your profile from Discover, or hide your area and budget. Hidden fields are removed on the server, not just in the interface.</p></div>
+    <div class="privacy-card"><h3>Minimal AI input</h3><p>Gemini gets your lifestyle answers and your about text with phone numbers, emails and UPI IDs removed. Not your name or exact area.</p></div>
+    <div class="privacy-card"><h3>Export or delete</h3><p>Download everything Domus holds about you as a file, or delete your account and its data in one step.</p></div>
+  </div>
+  <p class="privacy-links"><a href="/privacy.html">Privacy policy</a><a href="/terms.html">Terms</a><a href="/cookies.html">Cookies</a><a href="/acceptable-use.html">Acceptable use &amp; AI</a></p>
+</div></section>
+
+<section class="section tint" id="ai"><div class="container">
+  <div class="section-head">
+    <span class="kicker">Under the hood</span>
+    <h2>How Domus uses Gemini API keys.</h2>
+    <p>Domus calls Google's Gemini API for four things: the profile summary, match notes, the scam check and agreement drafts. Here is how those calls are made.</p>
+  </div>
+  <ol class="waterfall" aria-label="Order in which Domus tries Gemini keys and models">
+    <li><span class="wf-step">1</span><b>Key 1 · Model A</b><span>Tried first. The fastest model.</span></li>
+    <li><span class="wf-step">2</span><b>Key 1 · Model B</b><span>Tried if A fails or its quota is used up.</span></li>
+    <li><span class="wf-step">3</span><b>Key 2 · Model A</b><span>Next key, same model order.</span></li>
+    <li><span class="wf-step">4</span><b>Key 2 · Model B</b><span>Second model on the second key.</span></li>
+    <li><span class="wf-step">5</span><b>Key 3 · Models A and B</b><span>Last key, if the others are used up.</span></li>
+    <li class="wf-fallback"><span class="wf-step">✓</span><b>Built-in rules</b><span>If every call fails, Domus answers with its own rules and says so on the screen.</span></li>
+  </ol>
+  <div class="ai-points">
+    <div class="ai-point"><b>Keys stay on the server</b><p>Your keys are stored as secrets in Cloudflare Workers. They are sent only in a request header to Google, never to the browser, never in a URL, and never shown in any response.</p></div>
+    <div class="ai-point"><b>Limits per person</b><p>Each person can make 5 AI calls a minute and 30 a day by default. Over the limit, the built-in rules answer instead, so no one can use up the shared keys.</p></div>
+    <div class="ai-point"><b>Pauses after errors</b><p>A key or model that returns a quota or access error is paused for 60 seconds, then tried again. Other keys keep working in the meantime.</p></div>
+    <div class="ai-point"><b>You can see what answered</b><p>The status line shows which key and model answered. It shows the model and key number only, never the key itself.</p></div>
+  </div>
+  <p class="small muted" style="margin-top:24px">Free-tier limits are small and can change. The waterfall and the built-in rules keep the demo working when they run out. Text sent to Gemini is redacted first, as described in the <a href="/privacy.html">privacy policy</a>.</p>
+</div></section>
+
+<section class="section" id="faq"><div class="container faq-wrap">
+  <div>
+    <span class="kicker">FAQ</span>
+    <h2>Questions people ask first.</h2>
+  </div>
+  <div class="faq">
+    <details><summary>Is it free?</summary><p>The demo is free to try. There is no payment in this build, and Domus does not move rent or deposits.</p></details>
+    <details><summary>Is my phone number shared with flatmates?</summary><p>No. Your number is stored only as a keyed hash plus the last four digits. Other users never see it.</p></details>
+    <details><summary>Are the ID checks real?</summary><p>Not in this demo. The ID step is a mock and does not check any document. The app says so on the screen.</p></details>
+    <details><summary>Can I trust the scam check and the agreement?</summary><p>Treat both as a starting point. The scam check can miss scams and can flag honest messages. Agreement drafts are not legal advice; a lawyer should review them before anyone signs.</p></details>
+    <details><summary>How do the Gemini keys work?</summary><p>Domus has up to three Google Gemini keys. It tries key 1 with its first model, then its second model, then key 2, and so on. A key that hits a quota limit is paused for a minute. If every call fails, Domus uses its built-in rules and says so. The keys never leave the server. See the section above for the full order.</p></details>
+    <details><summary>Where does the AI run?</summary><p>Summaries, match notes, scam checks and agreement drafts use Google's Gemini API. Phone numbers, emails, UPI IDs and links are removed before text is sent.</p></details>
+    <details><summary>Can I leave and take my data with me?</summary><p>Yes. Download everything Domus holds about you as a file, then delete your account from the Profile screen.</p></details>
+  </div>
+</div></section>
+
+<section class="cta"><div class="container">
+  <div class="cta-panel">
+    <div>
+      <h2>See it working in about 3 minutes.</h2>
+      <p>The demo gives you a filled-in home, a sample ledger and a set of matches.</p>
+    </div>
+    <a class="btn btn-light" href="/app/">Try the live demo →</a>
+  </div>
+</div></section>
+
+</main>
+
+<footer class="footer"><div class="container footer-row">
+  <a class="brand" href="/"><span class="brand-mark">⌂</span>Domus</a>
+  <span>Find. Share. Belong. · Demo build, not for real listings.</span>
+  <nav><a href="#how">How it works</a><a href="/privacy.html">Privacy policy</a><a href="/terms.html">Terms</a><a href="/cookies.html">Cookies</a><a href="/acceptable-use.html">Acceptable use</a><a href="mailto:hello@domus.example">Contact</a></nav>
+</div></footer>
+
+<script src="site/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+node_modules/
+.wrangler/
+
+# Secrets: never commit real keys
+.dev.vars
+.env
+.env.*
+
+# Local-only working folders (not part of the public repo)
+design/
+process/
+submission-draft.md
+
+# Logs and OS files
+wd.log
+wd.err
+*.log
+.DS_Store

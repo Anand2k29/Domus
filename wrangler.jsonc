@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "domus",
+  "main": "src/worker.js",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "domus-db",
+      "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+    }
+  ],
+  "vars": {
+    "DEMO_MODE": "true",
+    "ADMIN_PHONES": "",
+    "AI_LIMIT_PER_MINUTE": "5",
+    "AI_LIMIT_PER_DAY": "30",
+    "GEMINI_MODELS": "gemini-2.5-flash,gemini-2.5-flash-lite"
+  }
+}

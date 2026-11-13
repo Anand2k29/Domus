@@ -1,0 +1,12 @@
+# Copy this file to .dev.vars for local development (it is git-ignored).
+# For production, set the same names with: npx wrangler secret put GEMINI_KEY_1  (etc.)
+
+# Secret used to hash phone numbers (16+ random characters). Generate one, never reuse it, never commit it.
+PRIVACY_PEPPER=replace-with-a-long-random-string-of-16-plus-chars
+
+GEMINI_KEY_1=your-first-google-ai-studio-key
+GEMINI_KEY_2=your-second-key
+GEMINI_KEY_3=your-third-key
+
+# Optional: comma-separated phone numbers that get the admin role (e.g. +919999999999)
+# ADMIN_PHONES=+919999999999

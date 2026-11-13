@@ -1,0 +1,11 @@
+﻿{
+  "name": "Domus",
+  "short_name": "Domus",
+  "description": "Find. Share. Belong.",
+  "start_url": "/app/",
+  "display": "standalone",
+  "background_color": "#F4F0E8",
+  "theme_color": "#C87952",
+  "icons": []
+}
+

@@ -1,0 +1,22 @@
+﻿
+/* ---------- Gemini explainer ---------- */
+.waterfall { list-style: none; padding: 0; margin: 0 0 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; counter-reset: wf; }
+.waterfall li { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; display: grid; gap: 6px; }
+.waterfall li b { font-size: 16px; color: var(--ink); letter-spacing: -0.01em; }
+.waterfall li span:not(.wf-step) { font-size: 14px; color: var(--muted); }
+.wf-step { width: 28px; height: 28px; border-radius: 9px; background: var(--espresso); color: var(--cream); display: grid; place-items: center; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.waterfall .wf-fallback { background: var(--espresso); border-color: var(--espresso); }
+.waterfall .wf-fallback b { color: #fff; }
+.waterfall .wf-fallback span:not(.wf-step) { color: #CDBDB0; }
+.waterfall .wf-fallback .wf-step { background: var(--clay); }
+.ai-points { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.ai-point { border-top: 1px solid var(--line); padding-top: 20px; }
+.ai-point b { display: block; font-size: 16px; margin-bottom: 8px; color: var(--ink); }
+.ai-point p { font-size: 14px; }
+@media (max-width: 900px) {
+  .waterfall { grid-template-columns: 1fr; }
+  .ai-points { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .ai-points { grid-template-columns: 1fr; }
+}

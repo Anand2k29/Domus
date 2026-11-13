@@ -1,0 +1,42 @@
+:root {
+  --clay: #C87952;
+  --terracotta: #C66A3D;
+  --espresso: #29221E;
+  --bone: #F4EDE6;
+  --rose: #D8A78A;
+  --sage: #A7B59A;
+  --cream: #FFF8F1;
+  --text: #2B241F;
+  --muted: #76685E;
+  --border: #E8D8CA;
+  --success: #72A879;
+  --danger: #DE735D;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --shadow-card: 0 8px 24px rgba(55, 36, 24, .10);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--bone);
+  font-family: "Montserrat", "Plus Jakarta Sans", Arial, sans-serif;
+}
+.domus-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 0 22px; border-radius: 999px;
+  border: 1px solid transparent; font: 600 14px/1 inherit;
+  cursor: pointer; transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+.domus-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(70,40,20,.15); }
+.domus-btn:focus-visible { outline: 3px solid rgba(200,121,82,.35); outline-offset: 3px; }
+.domus-btn--primary { color: white; background: linear-gradient(110deg,#C66A3D,#C87952); }
+.domus-btn--secondary { color: var(--terracotta); background: transparent; border-color: var(--terracotta); }
+.domus-btn--ghost { color: var(--espresso); background: #F8EBDD; border-color: #EAD5C4; }
+.domus-btn--success { color: white; background: var(--success); }
+.domus-btn--danger { color: white; background: var(--danger); }
+.domus-icon-btn { width: 42px; height: 42px; border: 1px solid var(--border); border-radius: 50%; background: var(--cream); color: var(--espresso); }
+.domus-card { background: var(--cream); border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-card); }
+.domus-input { width: 100%; min-height: 44px; border: 1px solid var(--border); border-radius: 12px; padding: 0 14px; background: #FFF9F3; color: var(--text); }
+.domus-chip { display: inline-flex; padding: 7px 12px; border-radius: 999px; background: #F4E5D8; color: var(--espresso); font-size: 12px; }
