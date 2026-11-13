@@ -368,47 +368,61 @@ async function homeScreen() {
   // Live Gemini status (demo mode only). Shows which key and model answered, never the keys themselves.
   let ai = null;
   try { ai = await (await fetch('/api/ai-status')).json(); } catch { ai = null; }
-  const aiBadgeHtml = !ai || ai.error ? '' : ai.live
-    ? `<span class="badge">✦ Gemini live · ${esc(ai.served_by)}</span>`
-    : `<span class="tag">Gemini not reachable (${ai.keys_configured ? 'check the keys in .dev.vars' : 'no keys set'}). Rule-based answers are shown instead.</span>`;
-  const name = h.name || S.user?.phone || 'there';
+  const aiPill = !ai || ai.error ? '' : ai.live
+    ? `<span class="status-pill live">Gemini live · ${esc(ai.served_by)}</span>`
+    : `<span class="status-pill">${ai.keys_configured ? 'Gemini unreachable · rules on' : 'Rules mode · no AI keys'}</span>`;
+  const name = h.name || 'there';
+  const hour = new Date().getHours();
+  const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  const place = [S.profile?.locality, S.profile?.city].filter(Boolean).join(', ');
+  const depositHtml = h.deposit
+    ? `₹<span class="count" data-value="${Math.round(h.deposit)}">${Math.round(h.deposit)}</span>`
+    : '—';
   const feed = h.recent_activity.length
-    ? h.recent_activity.map((a) => `<div><span>${esc(a.text)}</span><div class="small muted">${dateShort(a.at)}</div></div>`).join('')
+    ? `<div class="timeline">${h.recent_activity.map((a, i) => `<div class="timeline-item rise" style="--i:${i}">${esc(a.text)}<small class="muted">${dateShort(a.at)}</small></div>`).join('')}</div>`
     : '<div class="empty">No activity yet. Send a request or add an expense.</div>';
-  return paint('home', `<div class="page-head"><div><h1>Hello, ${esc(name)}! 👋</h1><p>Here's what's happening with your home.</p></div></div>
-  <div class="stats">
-    <div class="stat"><span>Active Match</span><b>${h.active_matches}</b></div>
-    <div class="stat"><span>This Month</span><b>${rupees(h.total_this_month)}</b></div>
-    <div class="stat"><span>Deposit Tracker</span><b>${h.deposit ? rupees(h.deposit) : '—'}</b></div>
-  </div>
-  <section class="card ai"><div class="eyebrow">Judge's guide · about 3 minutes</div>
-    <p>${aiBadgeHtml}</p>
-    <p class="small muted">Everything here is live. Try each step, then come back.</p>
-    <div class="chips">
-      <button class="btn ghost small-btn" data-go="discover">1 · Discover: open a match, send a request</button>
-      <button class="btn ghost small-btn" data-go="matches">2 · Matches: scores and recently viewed</button>
-      <button class="btn ghost small-btn" data-go="expenses">3 · Expenses: add a bill, see who owes whom</button>
-      <button class="btn ghost small-btn" data-go="agreement">4 · Agreement: create a draft</button>
-      <button class="btn ghost small-btn" data-go="scam">5 · Scam Check: scan a suspicious message</button>
-      <button class="btn ghost small-btn" data-go="me">6 · Privacy: export or delete your data</button>
+  const pct = (n) => Math.min(100, Math.max(12, n));
+  return paint('home', `
+  <div class="home-head rise"><div><p class="muted small">${greet}</p><h1>${esc(name)} 👋</h1></div>${aiPill}</div>
+  <section class="home-hero rise" style="--i:1">
+    <img src="/site/assets/images/hero-living-room.jpg" alt="Shared living room">
+    <div class="home-hero-body">
+      <span class="pill-soft">${h.has_profile ? (h.verified ? '✓ Verified' : 'Not verified yet') : 'Set up your profile'}</span>
+      <h3>${esc(place || 'Your home')}</h3>
+      <p>${esc(h.has_profile ? 'Your shared home at a glance' : 'Add preferences to start matching')}</p>
+      <div class="home-hero-actions"><button class="btn primary small-btn" data-go="expenses">View expenses</button><button class="btn glass small-btn" data-go="agreement">Agreement</button></div>
     </div>
   </section>
-  <div class="dash">
-    <div class="card">
-      <img class="home-pic" src="/site/assets/images/hero-living-room.jpg" alt="Shared living room">
-      <div class="row between"><div><h3>Your Home</h3><p class="muted small">${esc(S.profile?.locality || '')}${S.profile?.locality ? ', ' : ''}${esc(S.profile?.city || '')}</p></div>
-      <button class="btn ghost small-btn" data-go="expenses">View Details →</button></div>
-    </div>
-    <div class="card">
-      <h3>Recent Activity</h3>
-      <div class="list">${feed}</div>
-    </div>
-    <div class="card dark full">
-      <div class="row between wrap"><div><h3>Your Home, Your Rules</h3><p class="muted">Generate a roommate agreement with a click.</p></div>
-      <button class="btn primary" data-go="agreement">Create Agreement →</button></div>
-    </div>
+  <nav class="quick rise" style="--i:2" aria-label="Quick actions">
+    <button data-go="discover"><span class="q-ico">${NAV_ICON.discover}</span>Discover</button>
+    <button data-go="matches"><span class="q-ico">${NAV_ICON.matches}</span>Matches</button>
+    <button data-go="expenses"><span class="q-ico">₹</span>Expenses</button>
+    <button data-go="scam"><span class="q-ico">⛨</span>Scam check</button>
+  </nav>
+  <div class="stats-scroll rise" style="--i:3">
+    <div class="stat"><span>Active matches</span><b><span class="count" data-value="${h.active_matches}">${h.active_matches}</span></b><i class="stat-accent" style="--w:${pct(h.active_matches * 20)}%"></i></div>
+    <div class="stat"><span>Spent this month</span><b>₹<span class="count" data-value="${Math.round(h.total_this_month)}">${Math.round(h.total_this_month)}</span></b><i class="stat-accent" style="--w:${pct(h.total_this_month / 500)}%"></i></div>
+    <div class="stat"><span>Deposit</span><b>${depositHtml}</b><i class="stat-accent" style="--w:${h.deposit ? 100 : 12}%"></i></div>
   </div>
-  <p class="small muted center" style="margin-top:12px"><a href="#" data-go="scam">Check a listing</a></p>`);
+  <details class="guide rise" style="--i:4" open>
+    <summary>Judge's guide · about 3 minutes</summary>
+    <ol>
+      <li><button data-go="discover"><span class="g-num">1</span>Discover: open a match, send a request</button></li>
+      <li><button data-go="matches"><span class="g-num">2</span>Matches: scores and recently viewed</button></li>
+      <li><button data-go="expenses"><span class="g-num">3</span>Expenses: add a bill, see who owes whom</button></li>
+      <li><button data-go="agreement"><span class="g-num">4</span>Agreement: create a draft</button></li>
+      <li><button data-go="scam"><span class="g-num">5</span>Scam check: scan a suspicious message</button></li>
+      <li><button data-go="me"><span class="g-num">6</span>Privacy: export or delete your data</button></li>
+    </ol>
+  </details>
+  <section class="home-cta rise" style="--i:5">
+    <span class="kicker">Your home, your rules</span>
+    <h3>Draft the roommate agreement</h3>
+    <p>A clear first draft on rent, deposit and house rules, to review together.</p>
+    <button class="btn primary btn-block" data-go="agreement">Create agreement →</button>
+  </section>
+  <section class="card rise" style="--i:6"><h3>Recent activity</h3><div style="margin-top:14px">${feed}</div></section>
+  <p class="small muted center"><a href="#" data-go="scam">Check a listing</a></p>`, animateCounters);
 }
 
 // ---------- Discover and matches ----------
