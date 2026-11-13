@@ -3,9 +3,13 @@
   "short_name": "Domus",
   "description": "Find. Share. Belong.",
   "start_url": "/app/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#F4F0E8",
-  "theme_color": "#C87952",
-  "icons": []
+  "orientation": "portrait",
+  "background_color": "#FFFBF6",
+  "theme_color": "#C4623A",
+  "icons": [
+    { "src": "/assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
 }
-

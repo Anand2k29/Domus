@@ -1,4 +1,4 @@
-// Domus frontend: plain JS, no build step.
+﻿// Domus frontend: plain JS, no build step.
 // Every piece of user or AI text goes through esc() before it reaches innerHTML.
 
 const LOGO = `<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 23 24 8l18 15" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 20v20h24V20" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/><path d="M20 40V30h8v10" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/></svg>`;
@@ -146,8 +146,9 @@ function shell(active, content) {
   ].map(([k, l]) => `<button class="${active === k ? 'on' : ''}" data-go="${k}"><span class="ico">${NAV_ICON[k]}</span>${l}</button>`).join('');
   const verified = !!S.profile?.verified;
   return `<div class="shell">
-    <aside class="sidebar"><div class="brand">${LOGO}<span>Domus</span></div><nav class="stack">${side}</nav>
+    <aside class="sidebar"><a class="brand" href="#/home">${LOGO}<span>Domus</span></a><nav class="stack">${side}</nav>
       <div class="verify-pill ${verified ? 'ok' : ''}">${verified ? 'Verified User Level 2' : 'Unverified user'}</div></aside>
+    <header class="m-top"><a class="brand" href="#/home">${LOGO}<span>Domus</span></a><a class="m-avatar" href="#/me" aria-label="Profile">${esc(S.profile?.initials || '·')}</a></header>
     <main class="main">${content}</main>
     <nav class="bottomnav" aria-label="Main">${bottom}</nav>
   </div>`;
@@ -414,6 +415,7 @@ async function homeScreen() {
 
 function profileCard(p) {
   return `<article class="card match" data-go="view/${esc(p.id)}" tabindex="0">
+    ${p.score != null ? `<div class="score score-pill"><b>${p.score}%</b><span>match</span></div>` : ''}
     <div class="row">
       <div class="avatar">${esc(p.initials)}</div>
       <div class="grow">
@@ -421,7 +423,6 @@ function profileCard(p) {
         <p class="muted small" style="margin:0">${esc(p.occupation)} · ${esc(p.gender)}</p>
         <p class="muted small" style="margin:0">📍 ${esc([p.locality, p.city].filter(Boolean).join(', '))}</p>
       </div>
-      ${p.score != null ? `<div class="score"><b>${p.score}%</b><span>match</span></div>` : ''}
     </div>
     <div class="row wrap" style="margin-top:12px">${p.verified ? '<span class="badge">✓ Verified</span>' : ''}${(p.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div>
     <div class="row between" style="margin-top:12px">
@@ -510,52 +511,80 @@ async function viewScreen(id) {
 
 // ---------- Expenses ledger ----------
 
+function expensesSkeleton() {
+  return `<div class="page-head ex-head"><div><div class="skel skel-line w30"></div><div class="skel skel-title"></div></div></div>
+  <div class="ex-grid">
+    <div class="card skel-card"><div class="skel skel-line w40"></div><div class="skel skel-big"></div><div class="skel skel-line"></div><div class="skel skel-line w60"></div></div>
+    <div class="card skel-card"><div class="skel skel-line w50"></div><div class="skel skel-line"></div><div class="skel skel-line"></div></div>
+    <div class="card skel-card full"><div class="skel skel-line w40"></div><div class="skel skel-line"></div><div class="skel skel-line"></div><div class="skel skel-line w70"></div></div>
+  </div>`;
+}
+
 async function expensesScreen() {
+  // Show the page structure straight away instead of a blank screen while the ledger loads.
+  paint('expenses', expensesSkeleton());
   const d = await api('/expenses');
   S.members = d.members.map((m) => m.name);
   const me = youName();
   const shown = d.expenses.filter((e) => S.ledgerTab === 'all' || (S.ledgerTab === 'you' ? e.paid_by === me : e.paid_by !== me));
-  const max = Math.max(1, ...Object.values(d.by_category));
-  const bars = Object.keys(d.by_category).length
-    ? Object.entries(d.by_category).map(([cat, amt]) => `<div class="bar-row"><span>${CATEGORY_ICON[cat] || '🧾'} ${esc(cat)}</span><div class="bar" style="width:${Math.round((amt / max) * 100)}%"></div><span class="small">${rupees(amt)}</span></div>`).join('')
-    : '<div class="empty">No spending yet.</div>';
-  const list = shown.length
-    ? shown.map((e) => `<div class="row"><div class="avatar" style="width:44px;height:44px;font-size:18px">${CATEGORY_ICON[e.category] || '🧾'}</div>
-        <div class="grow"><b>${esc(e.title)}</b><div class="small muted">${esc(e.paid_by)} paid · ${dateShort(e.created_at)}</div></div><b>${rupees(e.amount)}</b></div>`).join('')
-    : `<div class="empty">${d.expenses.length ? 'Nothing in this view.' : 'No expenses yet. Add the first one, or load a sample ledger.'}</div>`;
-  const balances = d.balances.map((b) => `<div class="row between"><span>${esc(b.name)}</span>
-    <span class="${b.net >= 0 ? 'money-pos' : 'money-neg'}">${b.net >= 0 ? 'is owed ' : 'owes '}${rupees(Math.abs(b.net))}</span></div>`).join('') || '<div class="empty">Add members to see who owes whom.</div>';
-  const members = d.members.map((m) => `<span class="tag">${esc(m.name)}</span>`).join(' ');
+  const maxCat = Math.max(1, ...Object.values(d.by_category));
+  const catRows = Object.entries(d.by_category).map(([cat, amt], i) => `
+    <div class="ex-cat" style="--i:${i}"><span>${CATEGORY_ICON[cat] || '🧾'} ${esc(cat)}</span>
+      <div class="ex-track"><span class="ex-fill" style="--w:${Math.round((amt / maxCat) * 100)}%;--i:${i}"></span></div>
+      <span class="small">${rupees(amt)}</span></div>`).join('')
+    || '<p class="small muted">No spending yet this month.</p>';
+  const items = shown.map((e, i) => `
+    <div class="ex-item" style="--i:${i}">
+      <div class="ex-ico" aria-hidden="true">${CATEGORY_ICON[e.category] || '🧾'}</div>
+      <div class="grow"><b class="ex-title">${esc(e.title)}</b><div class="small muted">${esc(e.paid_by)} paid · ${dateShort(e.created_at)}</div></div>
+      <b class="ex-amt">${rupees(e.amount)}</b>
+    </div>`).join('');
+  const balances = d.balances.map((b, i) => `
+    <div class="ex-bal" style="--i:${i}"><span class="ex-av">${esc(b.name.charAt(0).toUpperCase())}</span>
+      <span class="grow">${esc(b.name)}</span>
+      <span class="ex-pill ${b.net >= 0 ? 'pos' : 'neg'}">${b.net >= 0 ? 'is owed ' : 'owes '}${rupees(Math.abs(b.net))}</span></div>`).join('')
+    || '<p class="small muted">Add members to see who owes whom.</p>';
+  const members = d.members.map((m, i) => `<span class="ex-member" style="--i:${i}"><i>${esc(m.name.charAt(0).toUpperCase())}</i>${esc(m.name)}</span>`).join('');
+  const listBody = shown.length
+    ? items
+    : `<div class="ex-empty"><div class="ex-empty-art" aria-hidden="true">🧾</div>
+        <h3>${d.expenses.length ? 'Nothing in this view' : 'No expenses yet'}</h3>
+        <p class="muted">${d.expenses.length ? 'Switch the filter to see everything.' : 'Add the first bill, or load a sample ledger to see how splits work.'}</p>
+        ${d.expenses.length ? '' : `<div class="row wrap" style="justify-content:center"><button class="btn primary" data-action="add-expense">+ Add expense</button><button class="btn ghost" data-action="sample">Load sample ledger</button></div>`}
+      </div>`;
 
-  return paint('expenses', `<div class="page-head"><div><h1>Expenses</h1><p>Shared bills for your home.</p></div>
-    <button class="btn primary small-btn no-print" data-action="add-expense">+ Add Expense</button></div>
-  <div class="dash">
-    <div class="card dark">
-      <div class="small muted">Total Spent</div>
-      <div class="verdict" style="color:var(--bone)">${rupees(d.total_this_month)}</div>
-      <div class="small muted" style="margin-bottom:14px">This Month</div>
-      <div class="bar-wrap">${bars}</div>
-    </div>
-    <div class="card">
+  return paint('expenses', `
+  <div class="page-head ex-head">
+    <div><span class="kicker">Shared home</span><h1>Expenses</h1><p>Bills, splits and balances for your flat.</p></div>
+    <button class="btn primary ex-add no-print" data-action="add-expense"><span class="plus" aria-hidden="true">+</span> Add expense</button>
+  </div>
+  <div class="ex-grid">
+    <section class="card dark ex-hero reveal" style="--i:0">
+      <span class="pill-live">This month</span>
+      <div class="ex-total"><span class="ex-cur">₹</span><span class="count" data-value="${Math.round(d.total_this_month)}">${Math.round(d.total_this_month)}</span></div>
+      <div class="ex-cats">${catRows}</div>
+    </section>
+    <section class="card reveal" style="--i:1">
       <h3>Who owes whom</h3>
-      <div class="list" style="margin-top:8px">${balances}</div>
-      <p class="small muted" style="margin-top:10px">Costs are split equally across members.</p>
-    </div>
-    <div class="card full">
-      <div class="tabs">${[['all', 'All'], ['you', 'You'], ['others', 'Others']].map(([k, l]) =>
-        `<button class="${S.ledgerTab === k ? 'on' : ''}" data-action="tab" data-scope="ledger" data-tab="${k}">${l}</button>`).join('')}</div>
-      <div class="list">${list}</div>
-      ${d.members.length === 0 ? '<button class="btn ghost small-btn" style="margin-top:12px" data-action="sample">Load sample ledger</button>' : ''}
-    </div>
-    <div class="card full">
+      <div style="margin-top:10px">${balances}</div>
+      <p class="small muted" style="margin-top:12px">Costs are split equally across members.</p>
+    </section>
+    <section class="card full reveal" style="--i:2">
+      <div class="seg" role="tablist" aria-label="Filter expenses">
+        ${[['all', 'All'], ['you', 'You'], ['others', 'Others']].map(([k, l]) =>
+          `<button role="tab" aria-selected="${S.ledgerTab === k}" class="${S.ledgerTab === k ? 'on' : ''}" data-action="tab" data-scope="ledger" data-tab="${k}">${l}</button>`).join('')}
+      </div>
+      <div class="ex-list">${listBody}</div>
+    </section>
+    <section class="card full reveal" style="--i:3">
       <h3>Members</h3>
-      <div class="row wrap" style="margin:8px 0 12px">${members || '<span class="muted small">No members yet.</span>'}</div>
-      <form id="member-form" class="row wrap">
-        <input type="text" id="member-name" placeholder="Add a flatmate's name" maxlength="40" style="max-width:280px">
+      <div class="ex-members" style="margin-top:12px">${members || '<span class="small muted">No members yet.</span>'}</div>
+      <form id="member-form" class="ex-add-member">
+        <input type="text" id="member-name" placeholder="Add a flatmate's name" maxlength="40" aria-label="Flatmate name">
         <button class="btn ghost small-btn" type="submit">Add member</button>
       </form>
-    </div>
-  </div>`);
+    </section>
+  </div>`, animateCounters);
 }
 
 function openExpenseModal() {
@@ -909,3 +938,36 @@ async function boot() {
 }
 
 boot();
+
+// Count-up animation for big numbers (respects reduced motion).
+function animateCounters() {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.count').forEach((el) => {
+    const end = Number(el.dataset.value) || 0;
+    if (reduce || end === 0) { el.textContent = end.toLocaleString('en-IN'); return; }
+    const t0 = performance.now();
+    const dur = 900;
+    const step = (t) => {
+      const p = Math.min(1, (t - t0) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(end * eased).toLocaleString('en-IN');
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  });
+}
+
+// Press ripple for buttons (touch and mouse).
+document.addEventListener('pointerdown', (e) => {
+  const btn = e.target.closest('.btn');
+  if (!btn || btn.disabled || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const rect = btn.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  const dot = document.createElement('span');
+  dot.className = 'ripple';
+  dot.style.width = dot.style.height = size + 'px';
+  dot.style.left = (e.clientX - rect.left - size / 2) + 'px';
+  dot.style.top = (e.clientY - rect.top - size / 2) + 'px';
+  btn.appendChild(dot);
+  setTimeout(() => dot.remove(), 700);
+});

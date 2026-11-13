@@ -141,19 +141,22 @@
     <h2>How Domus uses Gemini API keys.</h2>
     <p>Domus calls Google's Gemini API for four things: the profile summary, match notes, the scam check and agreement drafts. Here is how those calls are made.</p>
   </div>
-  <ol class="waterfall" aria-label="Order in which Domus tries Gemini keys and models">
-    <li><span class="wf-step">1</span><b>Key 1 · Model A</b><span>Tried first. The fastest model.</span></li>
-    <li><span class="wf-step">2</span><b>Key 1 · Model B</b><span>Tried if A fails or its quota is used up.</span></li>
-    <li><span class="wf-step">3</span><b>Key 2 · Model A</b><span>Next key, same model order.</span></li>
-    <li><span class="wf-step">4</span><b>Key 2 · Model B</b><span>Second model on the second key.</span></li>
-    <li><span class="wf-step">5</span><b>Key 3 · Models A and B</b><span>Last key, if the others are used up.</span></li>
-    <li class="wf-fallback"><span class="wf-step">✓</span><b>Built-in rules</b><span>If every call fails, Domus answers with its own rules and says so on the screen.</span></li>
-  </ol>
+  <div class="flow" aria-label="Order in which Domus tries Gemini keys and models">
+    <div class="flow-track" aria-hidden="true"><span class="flow-pulse"></span></div>
+    <ol class="flow-nodes">
+      <li class="flow-node reveal" style="--i:0"><span class="node-dot">01</span><code>key-1 · model-a</code><b>Tried first</b><span>The fastest model answers, if its quota allows.</span></li>
+      <li class="flow-node reveal" style="--i:1"><span class="node-dot">02</span><code>key-1 · model-b</code><b>Next model</b><span>Used when model A fails or its quota is spent.</span></li>
+      <li class="flow-node reveal" style="--i:2"><span class="node-dot">03</span><code>key-2 · model-a</code><b>Next key</b><span>The same model order, on the second key.</span></li>
+      <li class="flow-node reveal" style="--i:3"><span class="node-dot">04</span><code>key-2 · model-b</code><b>Second model</b><span>The backup model on the second key.</span></li>
+      <li class="flow-node reveal" style="--i:4"><span class="node-dot">05</span><code>key-3 · models a+b</code><b>Last key</b><span>Only if both earlier keys are used up.</span></li>
+      <li class="flow-node flow-node--fallback reveal" style="--i:5"><span class="node-dot">✓</span><code>built-in rules</code><b>Always answers</b><span>If every call fails, Domus answers with its own rules and says so on screen.</span></li>
+    </ol>
+  </div>
   <div class="ai-points">
-    <div class="ai-point"><b>Keys stay on the server</b><p>Your keys are stored as secrets in Cloudflare Workers. They are sent only in a request header to Google, never to the browser, never in a URL, and never shown in any response.</p></div>
-    <div class="ai-point"><b>Limits per person</b><p>Each person can make 5 AI calls a minute and 30 a day by default. Over the limit, the built-in rules answer instead, so no one can use up the shared keys.</p></div>
-    <div class="ai-point"><b>Pauses after errors</b><p>A key or model that returns a quota or access error is paused for 60 seconds, then tried again. Other keys keep working in the meantime.</p></div>
-    <div class="ai-point"><b>You can see what answered</b><p>The status line shows which key and model answered. It shows the model and key number only, never the key itself.</p></div>
+    <div class="ai-point reveal"><b>Keys stay on the server</b><p>Your keys are stored as secrets in Cloudflare Workers. They are sent only in a request header to Google, never to the browser, never in a URL, and never shown in any response.</p></div>
+    <div class="ai-point reveal"><b>Limits per person</b><p>Each person can make 5 AI calls a minute and 30 a day by default. Over the limit, the built-in rules answer instead, so no one can use up the shared keys.</p></div>
+    <div class="ai-point reveal"><b>Pauses after errors</b><p>A key or model that returns a quota or access error is paused for 60 seconds, then tried again. Other keys keep working in the meantime.</p></div>
+    <div class="ai-point reveal"><b>You can see what answered</b><p>The status line shows which key and model answered. It shows the model and key number only, never the key itself.</p></div>
   </div>
   <p class="small muted" style="margin-top:24px">Free-tier limits are small and can change. The waterfall and the built-in rules keep the demo working when they run out. Text sent to Gemini is redacted first, as described in the <a href="/privacy.html">privacy policy</a>.</p>
 </div></section>

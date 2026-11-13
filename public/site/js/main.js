@@ -23,3 +23,19 @@ navLinks?.querySelectorAll('a').forEach((link) => link.addEventListener('click',
     // Offline or not in demo mode: stay quiet.
   }
 })();
+
+// Scroll reveal for elements marked .reveal (staggered by the --i custom property).
+const revealEls = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window && revealEls.length) {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.18, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach((el) => io.observe(el));
+} else {
+  revealEls.forEach((el) => el.classList.add('in'));
+}

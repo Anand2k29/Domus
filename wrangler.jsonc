@@ -13,7 +13,7 @@
     {
       "binding": "DB",
       "database_name": "domus-db",
-      "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+      "database_id": "4ed80b98-e040-4d5f-b3ab-07c8e1b99ba5"
     }
   ],
   "vars": {
