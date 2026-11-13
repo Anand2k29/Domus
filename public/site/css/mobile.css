@@ -107,3 +107,33 @@
 @media (prefers-reduced-motion: reduce) {
   .m-dock a, .btn-sm { transition: none; }
 }
+
+/* Legal: consent line under the closing call to action, and the footer legal list */
+.m-legal-note { margin: 18px 0 0; font-size: 13px; line-height: 1.6; color: #FBE3D6; }
+.m-legal-note a { color: #fff; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.m-foot { text-align: center; }
+.m-foot-brand { font-weight: 700; font-size: 16px; color: var(--ink); }
+.m-legal { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; margin: 14px 0 6px; text-align: left; }
+.m-legal a { display: flex; align-items: center; min-height: 44px; padding: 10px 14px; border-radius: 14px; background: #fff; border: 1px solid var(--line); color: var(--espresso); font-size: 13px; font-weight: 600; text-decoration: none; }
+.m-legal a:active { transform: scale(.97); background: #F3DCCB; }
+@media (max-width: 340px) { .m-legal { grid-template-columns: 1fr; } }
+
+/* Longer mobile landing: who it's for, comparison, screens, timeline */
+.m-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--terracotta); background: #F6E4D8; padding: 5px 10px; border-radius: 999px; margin-bottom: 10px; }
+.m-compare { display: grid; gap: 12px; margin-top: 18px; }
+.m-compare-row { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 18px; }
+.m-compare-when { display: block; font-weight: 700; font-size: 15px; color: var(--ink); margin-bottom: 8px; }
+.m-compare-row p { font-size: 14px; margin: 0 0 6px; }
+.m-compare-row p:last-child { margin-bottom: 0; }
+.m-compare-row p b { color: var(--muted); font-weight: 600; }
+.m-screens { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+.m-screen { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 14px; display: grid; gap: 4px; min-height: 96px; align-content: start; }
+.m-screen b { font-size: 14px; color: var(--ink); }
+.m-screen span { font-size: 12px; color: var(--muted); line-height: 1.4; }
+.m-screens .m-screen:last-child { grid-column: 1 / -1; }
+.m-timeline { list-style: none; margin: 18px 0 0; padding: 0 0 0 26px; position: relative; display: grid; gap: 18px; }
+.m-timeline::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(180deg, var(--clay), #E2CDBD); }
+.m-timeline li { position: relative; }
+.m-timeline li::before { content: ""; position: absolute; left: -26px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--clay); box-shadow: 0 0 0 4px var(--paper); }
+.m-timeline b { display: block; font-size: 15px; color: var(--ink); margin-bottom: 4px; }
+.m-timeline p { font-size: 14px; margin: 0; }

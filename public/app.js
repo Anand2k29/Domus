@@ -1,4 +1,4 @@
-﻿// Domus frontend: plain JS, no build step.
+// Domus frontend: plain JS, no build step.
 // Every piece of user or AI text goes through esc() before it reaches innerHTML.
 
 const LOGO = `<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 23 24 8l18 15" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 20v20h24V20" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/><path d="M20 40V30h8v10" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/></svg>`;
@@ -9,6 +9,7 @@ const NAV_ICON = {
   matches: '<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>',
   home: '<svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>',
   me: '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+  scam: '<svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>',
 };
 
 const S = {
@@ -142,7 +143,7 @@ function shell(active, content) {
     ['agreement', 'Agreement'], ['scam', 'Scam Check'], ['me', 'Profile'],
   ].map(([k, l]) => `<button class="side-item ${active === k ? 'on' : ''}" data-go="${k}">${l}</button>`).join('');
   const bottom = [
-    ['discover', 'Discover'], ['matches', 'Matches'], ['home', 'Home'], ['me', 'Profile'],
+    ['discover', 'Discover'], ['matches', 'Matches'], ['home', 'Home'], ['scam', 'Scam check'],
   ].map(([k, l]) => `<button class="${active === k ? 'on' : ''}" data-go="${k}"><span class="ico">${NAV_ICON[k]}</span>${l}</button>`).join('');
   const verified = !!S.profile?.verified;
   return `<div class="shell">
@@ -394,10 +395,9 @@ async function homeScreen() {
     </div>
   </section>
   <nav class="quick rise" style="--i:2" aria-label="Quick actions">
-    <button data-go="discover"><span class="q-ico">${NAV_ICON.discover}</span>Discover</button>
-    <button data-go="matches"><span class="q-ico">${NAV_ICON.matches}</span>Matches</button>
-    <button data-go="expenses"><span class="q-ico">₹</span>Expenses</button>
-    <button data-go="scam"><span class="q-ico">⛨</span>Scam check</button>
+    <button class="qa qa-discover" data-go="discover"><span class="qa-ico">${NAV_ICON.discover}</span><span class="qa-text"><b>Discover</b><small>Find your people</small></span><span class="qa-arrow" aria-hidden="true">→</span></button>
+    <button class="qa qa-matches" data-go="matches"><span class="qa-ico">${NAV_ICON.matches}</span><span class="qa-text"><b>Matches</b><small>Your shortlist</small></span><span class="qa-arrow" aria-hidden="true">→</span></button>
+    <button class="qa qa-expenses" data-go="expenses"><span class="qa-ico">₹</span><span class="qa-text"><b>Expenses</b><small>Bills and balances</small></span><span class="qa-arrow" aria-hidden="true">→</span></button>
   </nav>
   <div class="stats-scroll rise" style="--i:3">
     <div class="stat"><span>Active matches</span><b><span class="count" data-value="${h.active_matches}">${h.active_matches}</span></b><i class="stat-accent" style="--w:${pct(h.active_matches * 20)}%"></i></div>
